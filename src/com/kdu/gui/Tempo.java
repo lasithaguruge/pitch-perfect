@@ -6,6 +6,7 @@
 package com.kdu.gui;
 
 import javax.swing.ImageIcon;
+import com.kdu.test.AudioDrums;
 
 /**
  *
@@ -13,12 +14,15 @@ import javax.swing.ImageIcon;
  */
 public class Tempo extends javax.swing.JFrame {
 
+    AudioDrums ad;
+
     /**
      * Creates new form MusicGenerate
      */
     public Tempo() {
         initComponents();
         setLocationRelativeTo(null);
+        ad = new AudioDrums();
     }
 
     /**
@@ -87,7 +91,7 @@ public class Tempo extends javax.swing.JFrame {
 
         tempoValue.setFont(new java.awt.Font("Bookman Old Style", 1, 48)); // NOI18N
         tempoValue.setForeground(new java.awt.Color(255, 153, 0));
-        tempoValue.setText("100");
+        tempoValue.setText("5");
         TempoWindowPanel.add(tempoValue);
         tempoValue.setBounds(160, 120, 130, 60);
 
@@ -199,12 +203,18 @@ public class Tempo extends javax.swing.JFrame {
         int value = Integer.parseInt(tempoValue.getText());
         value = value + 1;
         tempoValue.setText(Integer.toString(value));
+        double sign = normalize(value);
+        System.out.println("value : ============= "+sign);
+        ad.beatGenerate(sign);
     }//GEN-LAST:event_tempoHighBtnMouseClicked
 
     private void tempoLowBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempoLowBtnMouseClicked
         int value = Integer.parseInt(tempoValue.getText());
         value = value - 1;
         tempoValue.setText(Integer.toString(value));
+        double sign = normalize(value);
+        System.out.println("value : ============= "+sign);
+        ad.beatGenerate(sign);
     }//GEN-LAST:event_tempoLowBtnMouseClicked
 
     private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
@@ -301,4 +311,11 @@ public class Tempo extends javax.swing.JFrame {
     private javax.swing.JLabel tempoLowBtn;
     private javax.swing.JLabel tempoValue;
     // End of variables declaration//GEN-END:variables
+
+    public double normalize(double x) {
+        return ((x - 0)
+                / (10 - 0))
+                * (80 - 30) + 30;
+    }
+
 }

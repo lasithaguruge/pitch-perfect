@@ -37,11 +37,10 @@ public class Configuration extends javax.swing.JFrame {
         classicBtn = new javax.swing.JLabel();
         countryBtn = new javax.swing.JLabel();
         cancelButton = new javax.swing.JLabel();
-        okButton = new javax.swing.JLabel();
         Background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(705, 480));
+        setPreferredSize(new java.awt.Dimension(710, 485));
         getContentPane().setLayout(null);
 
         SelectStyle.setLayout(null);
@@ -146,28 +145,7 @@ public class Configuration extends javax.swing.JFrame {
             }
         });
         SelectStyle.add(cancelButton);
-        cancelButton.setBounds(570, 370, 100, 40);
-
-        okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/kdu/gui/images/ok button.PNG"))); // NOI18N
-        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                okButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                okButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                okButtonMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                okButtonMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                okButtonMouseReleased(evt);
-            }
-        });
-        SelectStyle.add(okButton);
-        okButton.setBounds(460, 370, 100, 40);
+        cancelButton.setBounds(560, 370, 100, 40);
 
         Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/kdu/gui/images/music style.jpg"))); // NOI18N
         SelectStyle.add(Background);
@@ -179,16 +157,6 @@ public class Configuration extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
-        ImageIcon hover = new ImageIcon(getClass().getResource("images/ok button hover.png"));
-        okButton.setIcon(hover);
-    }//GEN-LAST:event_okButtonMouseEntered
-
-    private void okButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseExited
-        ImageIcon normal = new ImageIcon(getClass().getResource("images/ok button.png"));
-        okButton.setIcon(normal);
-    }//GEN-LAST:event_okButtonMouseExited
-
     private void cancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseExited
         ImageIcon normal = new ImageIcon(getClass().getResource("images/cancel button.png"));
         cancelButton.setIcon(normal);
@@ -198,16 +166,6 @@ public class Configuration extends javax.swing.JFrame {
         ImageIcon hover = new ImageIcon(getClass().getResource("images/cancel button hover.png"));
         cancelButton.setIcon(hover);
     }//GEN-LAST:event_cancelButtonMouseEntered
-
-    private void okButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMousePressed
-        ImageIcon hover = new ImageIcon(getClass().getResource("images/ok button pressed.png"));
-        okButton.setIcon(hover);
-    }//GEN-LAST:event_okButtonMousePressed
-
-    private void okButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseReleased
-        ImageIcon normal = new ImageIcon(getClass().getResource("images/ok button.png"));
-        okButton.setIcon(normal);
-    }//GEN-LAST:event_okButtonMouseReleased
 
     private void cancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMousePressed
         ImageIcon hover = new ImageIcon(getClass().getResource("images/cancel button pressed.png"));
@@ -299,11 +257,6 @@ public class Configuration extends javax.swing.JFrame {
         popBtn.setIcon(hover);
     }//GEN-LAST:event_popBtnMouseEntered
 
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        dispose();
-        new Tempo().setVisible(true);
-    }//GEN-LAST:event_okButtonMouseClicked
-
     private void countryBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_countryBtnMouseClicked
         dispose();
         new Tempo().setVisible(true);
@@ -366,7 +319,6 @@ public class Configuration extends javax.swing.JFrame {
     private javax.swing.JLabel classicBtn;
     private javax.swing.JLabel countryBtn;
     private javax.swing.JLabel jazzBtn;
-    private javax.swing.JLabel okButton;
     private javax.swing.JLabel popBtn;
     // End of variables declaration//GEN-END:variables
 }
