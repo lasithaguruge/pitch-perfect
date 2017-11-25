@@ -46,16 +46,16 @@ public class BasicMarkov {
                     break; //break when we have chosen the right number
                 }
             }
-            Note note = new Note();
-            note.setPitch(map[output]);
-            phrase.addNote(note);
-            //Change the seed to equal the output
-            seed = output;
-            //Reset the output for the next pass     
-            output = 0;
+                Note note = new Note();
+                note.setPitch(map[output]);
+                phrase.addNote(note);
+                //Change the seed to equal the output
+                seed = output;
+                //Reset the output for the next pass     
+                output = 0;
+            }
+            part.addPhrase(phrase);
+            scr.addPart(part);
+            Write.midi(scr, "basic_markov.mid");
         }
-        part.addPhrase(phrase);
-        scr.addPart(part);
-        Write.midi(scr, "basic_markov.mid");
-    }
 }

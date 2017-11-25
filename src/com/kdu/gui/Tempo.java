@@ -7,6 +7,13 @@ package com.kdu.gui;
 
 import javax.swing.ImageIcon;
 import com.kdu.test.AudioDrums;
+import com.kdu.test.Beat;
+import com.kdu.test.SimpleAnalysis;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import jm.music.data.Score;
+import jm.util.Play;
+import jm.util.Read;
 
 /**
  *
@@ -14,15 +21,29 @@ import com.kdu.test.AudioDrums;
  */
 public class Tempo extends javax.swing.JFrame {
 
-    AudioDrums ad;
+    SimpleAnalysis ad;
+    static Score s = new Score();
+    static int scoreCount = 0;
+    static FileDialog fd;
+    static Frame f = new Frame();
 
+    public int tempo;
+    public Beat beat;
     /**
      * Creates new form MusicGenerate
      */
     public Tempo() {
         initComponents();
         setLocationRelativeTo(null);
-        ad = new AudioDrums();
+        fd = new FileDialog(f, "", FileDialog.LOAD);
+        fd.show();
+        Read.midi(s, fd.getDirectory() + fd.getFile());
+        //s.setTitle(fd.getFile());
+        //beat = new Beat(s);
+        //System.out.println("END "+s.getEndTime());
+        s = s.copy(20.25, 38.25);
+        Play.midiCycle(s);
+        
     }
 
     /**
@@ -91,7 +112,7 @@ public class Tempo extends javax.swing.JFrame {
 
         tempoValue.setFont(new java.awt.Font("Bookman Old Style", 1, 48)); // NOI18N
         tempoValue.setForeground(new java.awt.Color(255, 153, 0));
-        tempoValue.setText("5");
+        tempoValue.setText("120");
         TempoWindowPanel.add(tempoValue);
         tempoValue.setBounds(160, 120, 130, 60);
 
@@ -203,18 +224,18 @@ public class Tempo extends javax.swing.JFrame {
         int value = Integer.parseInt(tempoValue.getText());
         value = value + 1;
         tempoValue.setText(Integer.toString(value));
-        double sign = normalize(value);
-        System.out.println("value : ============= "+sign);
-        ad.beatGenerate(sign);
+        s.setTempo(value);
+        Play.updateScore(s);
+        
     }//GEN-LAST:event_tempoHighBtnMouseClicked
 
     private void tempoLowBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempoLowBtnMouseClicked
         int value = Integer.parseInt(tempoValue.getText());
         value = value - 1;
         tempoValue.setText(Integer.toString(value));
-        double sign = normalize(value);
-        System.out.println("value : ============= "+sign);
-        ad.beatGenerate(sign);
+        //ad.readFile(value);
+        s.setTempo(value);
+        Play.updateScore(s);
     }//GEN-LAST:event_tempoLowBtnMouseClicked
 
     private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
@@ -258,7 +279,7 @@ public class Tempo extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonMouseReleased
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
-        dispose();
+        //dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -312,10 +333,9 @@ public class Tempo extends javax.swing.JFrame {
     private javax.swing.JLabel tempoValue;
     // End of variables declaration//GEN-END:variables
 
-    public double normalize(double x) {
-        return ((x - 0)
-                / (10 - 0))
-                * (80 - 30) + 30;
+    public int normalize(int bpm) {
+        int interval = 44100; // 1 beat per second, by default
+        return interval = ( bpm / 60 ) * 44100 ;
     }
 
 }
