@@ -57,173 +57,131 @@ public final class SimpleAnalysis extends Frame implements JMC {
     private static final String PRE_TEXT
             = "========================================================\n";
     
-    public SimpleAnalysis(){
-        fd = new FileDialog(f, "", FileDialog.LOAD);
-        fd.show();
-        Read.midi(s, fd.getDirectory() + fd.getFile());
-        s.setTitle(fd.getFile());
-        beat = new Beat(s);
-        Play.midi(beat);
-    }
-//    public static void main(String[] args) {
-//        new SimpleAnalysis();
-//    }
-
-//    public SimpleAnalysis() {
-//        FileDialog fd;
-//        Frame f = new Frame();
-//
-//        for (;;) {
-//            //open a MIDI file
-//            fd = new FileDialog(f,
-//                    "Open MIDI file or choose cancel to"
-//                    + " finish.",
-//                    FileDialog.LOAD);
-//            fd.show();
-//
-//            //break out when user presses cancel
-//            if (fd.getFile() == null) {
-//                break;
-//            }
-//
-//            Read.midi(s, fd.getDirectory() + fd.getFile());
-//            s.setTitle(fd.getFile());
-//
-//            s.setTempo(80);
-//           
-//            Play.midiCycle(s);
-//           
-//            //keep track of the number of scores analysed
-//            scoreCount++;
-//            //reset melody length
-//            int tempLength = 0;
-//            // iterate through each note
-//            //find the highest and lowest notes		
-//            Enumeration e = s.getPartList().elements();
-//            while (e.hasMoreElements()) {
-//                Part nextPt = (Part) e.nextElement();
-//                Enumeration enum2
-//                        = nextPt.getPhraseList().elements();
-//                while (enum2.hasMoreElements()) {
-//                    Phrase nextPhr
-//                            = (Phrase) enum2.nextElement();
-//                    Enumeration enum3
-//                            = nextPhr.getNoteList().elements();
-//                    while (enum3.hasMoreElements()) {
-//                        Note nextNote
-//                                = (Note) enum3.nextElement();
-//                        int pitch = nextNote.getPitch();
-//                        //check range
-//                        pitchRange(pitch);
-//                        double rv
-//                                = nextNote.getRhythmValue();
-//                        //check rhythmic values
-//                        rhythmRange(rv);
-//                        //check meldoy length
-//                        tempLength++;
-//                        //check direction
-//                        upOrDown(pitch);
-//                    }
-//                }
-//            }
-//            //update length extremes
-//            musicLength(tempLength);
-//
-//            //output the current stats
-//            System.out.print(PRE_TEXT);
-//            System.out.println("STATS after " + scoreCount
-//                    + " files. Last score called "
-//                    + s.getTitle());
-//            System.out.print(PRE_TEXT);
-//            System.out.println("Lowest note is " + lowNote);
-//            System.out.println("Highest note is " + highNote);
-//            System.out.println("---------------------------------");
-//            System.out.println("Shortest note is " + shortestRhythm);
-//            System.out.println("Longest note is " + longestRhythm);
-//            System.out.println("---------------------------------");
-//            System.out.println("Smallest score contains "
-//                    + shortLength + " notes");
-//            System.out.println("Largest score contains " + longLength
-//                    + " notes");
-//            System.out.println("---------------------------------");
-//            System.out.println("Upward movements were " + ascending);
-//            System.out.println("Downward movements were "
-//                    + descending);
-//            System.out.println("---------------------------------");
-//        }
-//    }
-    public void readFile(int tempo){  
-        System.out.println("TEMPO "+tempo);
-        s.setTempo(tempo);
-        Play.updateScore(s);
-    }
-    
-    public synchronized Score getNextTempo() {
-        s.setTempo(tempo);
-        return s;
+    public static void main(String[] args) {
+        new SimpleAnalysis();
     }
 
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
-    }
-    
-    // added for control change
-    public synchronized void externalAction(Object obj, int actionNumber){
-        if(actionNumber == 1){
-            TextField slider = (TextField)obj;
-            int filterCutoff = Integer.parseInt(slider.getText());
+    public SimpleAnalysis() {
+        FileDialog fd;
+        Frame f = new Frame();
+
+        for (;;) {
+            //open a MIDI file
+            fd = new FileDialog(f,
+                    "Open MIDI file or choose cancel to"
+                    + " finish.",
+                    FileDialog.LOAD);
+            fd.show();
+
+            //break out when user presses cancel
+            if (fd.getFile() == null) {
+                break;
+            }
+
+            Read.midi(s, fd.getDirectory() + fd.getFile());
+            s.setTitle(fd.getFile());
+
+            s.setTempo(80);
+           
+            Play.midiCycle(s);
+           
+            //keep track of the number of scores analysed
+            scoreCount++;
+            //reset melody length
+            int tempLength = 0;
+            // iterate through each note
+            //find the highest and lowest notes		
+            Enumeration e = s.getPartList().elements();
+            while (e.hasMoreElements()) {
+                Part nextPt = (Part) e.nextElement();
+                Enumeration enum2
+                        = nextPt.getPhraseList().elements();
+                while (enum2.hasMoreElements()) {
+                    Phrase nextPhr
+                            = (Phrase) enum2.nextElement();
+                    Enumeration enum3
+                            = nextPhr.getNoteList().elements();
+                    while (enum3.hasMoreElements()) {
+                        Note nextNote
+                                = (Note) enum3.nextElement();
+                        int pitch = nextNote.getPitch();
+                        //check range
+                        pitchRange(pitch);
+                        double rv
+                                = nextNote.getRhythmValue();
+                        //check rhythmic values
+                        rhythmRange(rv);
+                        //check meldoy length
+                        tempLength++;
+                        //check direction
+                        upOrDown(pitch);
+                        System.out.println("NOTES,"+nextNote.getName());
+                    }
+                }
+            }
+            //update length extremes
+            musicLength(tempLength);
+
+            //output the current stats
+            System.out.print(PRE_TEXT);
+            System.out.println("STATS after " + scoreCount
+                    + " files. Last score called "
+                    + s.getTitle());
+            System.out.print(PRE_TEXT);
+            System.out.println("Lowest note is " + lowNote);
+            System.out.println("Highest note is " + highNote);
+            System.out.println("---------------------------------");
+            System.out.println("Shortest note is " + shortestRhythm);
+            System.out.println("Longest note is " + longestRhythm);
+            System.out.println("---------------------------------");
+            System.out.println("Smallest score contains "
+                    + shortLength + " notes");
+            System.out.println("Largest score contains " + longLength
+                    + " notes");
+            System.out.println("---------------------------------");
+            System.out.println("Upward movements were " + ascending);
+            System.out.println("Downward movements were "
+                    + descending);
+            System.out.println("---------------------------------");
         }
     }
 
-//    public void pitchRange(int pitch) {
-//        //check the range of the MIDI file
-//        if (pitch < lowNote) {
-//            lowNote = pitch;
-//        }
-//        if (pitch > highNote) {
-//            highNote = pitch;
-//        }
-//    }
-//
-//    public void rhythmRange(double rv) {
-//        //check the range of the MIDI file
-//        if (rv < shortestRhythm) {
-//            shortestRhythm = rv;
-//        }
-//        if (rv > longestRhythm) {
-//            longestRhythm = rv;
-//        }
-//    }
-//
-//    public void musicLength(int temp) {
-//        if (temp < shortLength) {
-//            shortLength = temp;
-//        }
-//        if (temp > longLength) {
-//            longLength = temp;
-//        }
-//    }
-//
-//    public void upOrDown(int pitch) {
-//        if (pitch < prev) {
-//            descending++;
-//        }
-//        if (pitch > prev) {
-//            ascending++;
-//        }
-//        prev = pitch;
-//    }
-
-    public void tempoController(int tempo) {
-        
-        //s.setTempo(tempo);
+    public void pitchRange(int pitch) {
+        //check the range of the MIDI file
+        if (pitch < lowNote) {
+            lowNote = pitch;
+        }
+        if (pitch > highNote) {
+            highNote = pitch;
+        }
     }
 
-    public void controlPlayBeat() {
-        
+    public void rhythmRange(double rv) {
+        //check the range of the MIDI file
+        if (rv < shortestRhythm) {
+            shortestRhythm = rv;
+        }
+        if (rv > longestRhythm) {
+            longestRhythm = rv;
+        }
     }
 
-    public void controlStopBeat() {
+    public void musicLength(int temp) {
+        if (temp < shortLength) {
+            shortLength = temp;
+        }
+        if (temp > longLength) {
+            longLength = temp;
+        }
+    }
 
+    public void upOrDown(int pitch) {
+        if (pitch < prev) {
+            descending++;
+        }
+        if (pitch > prev) {
+            ascending++;
+        }
+        prev = pitch;
     }
 }

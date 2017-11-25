@@ -26,7 +26,6 @@ public class Tempo extends javax.swing.JFrame {
     static int scoreCount = 0;
     static FileDialog fd;
     static Frame f = new Frame();
-
     public int tempo;
     public Beat beat;
     /**
@@ -35,13 +34,13 @@ public class Tempo extends javax.swing.JFrame {
     public Tempo() {
         initComponents();
         setLocationRelativeTo(null);
-        fd = new FileDialog(f, "", FileDialog.LOAD);
-        fd.show();
-        Read.midi(s, fd.getDirectory() + fd.getFile());
+//        fd = new FileDialog(f, "", FileDialog.LOAD);
+//        fd.show();
+        Read.midi(s, "34time8.mid");
         //s.setTitle(fd.getFile());
         //beat = new Beat(s);
         //System.out.println("END "+s.getEndTime());
-        s = s.copy(20.25, 38.25);
+        s = s.copy(20.25, 35.25);
         Play.midiCycle(s);
         
     }
@@ -224,6 +223,7 @@ public class Tempo extends javax.swing.JFrame {
         int value = Integer.parseInt(tempoValue.getText());
         value = value + 1;
         tempoValue.setText(Integer.toString(value));
+        this.setTempo(value);
         s.setTempo(value);
         Play.updateScore(s);
         
@@ -233,7 +233,7 @@ public class Tempo extends javax.swing.JFrame {
         int value = Integer.parseInt(tempoValue.getText());
         value = value - 1;
         tempoValue.setText(Integer.toString(value));
-        //ad.readFile(value);
+        this.setTempo(value);
         s.setTempo(value);
         Play.updateScore(s);
     }//GEN-LAST:event_tempoLowBtnMouseClicked
@@ -284,7 +284,8 @@ public class Tempo extends javax.swing.JFrame {
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         dispose();
-        new MainWindow().setVisible(true);
+        new MainWindow(this.getTempo()).setVisible(true);
+        Play.stopMidi();
     }//GEN-LAST:event_okButtonMouseClicked
 
     /**
@@ -336,6 +337,14 @@ public class Tempo extends javax.swing.JFrame {
     public int normalize(int bpm) {
         int interval = 44100; // 1 beat per second, by default
         return interval = ( bpm / 60 ) * 44100 ;
+    }
+    
+    public int getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 
 }

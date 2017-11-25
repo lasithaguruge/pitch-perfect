@@ -5,7 +5,10 @@
  */
 package com.kdu.gui;
 
+import static com.kdu.gui.Tempo.s;
 import javax.swing.ImageIcon;
+import jm.util.Play;
+import jm.util.Read;
 
 /**
  *
@@ -20,6 +23,12 @@ public class Configuration extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
+        Read.midi(s, "34time8.mid");
+        //s.setTitle(fd.getFile());
+        //beat = new Beat(s);
+        //System.out.println("END "+s.getEndTime());
+        s = s.copy(20.25, 35.25);
+        
     }
 
     /**
@@ -178,11 +187,14 @@ public class Configuration extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonMouseReleased
 
     private void countryBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_countryBtnMouseEntered
+    
         ImageIcon hover = new ImageIcon(getClass().getResource("images/country button hover.png"));
         countryBtn.setIcon(hover);
+        
     }//GEN-LAST:event_countryBtnMouseEntered
 
     private void countryBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_countryBtnMouseExited
+        //Play.stopMidiCycle();
         ImageIcon normal = new ImageIcon(getClass().getResource("images/country button.png"));
         countryBtn.setIcon(normal);
     }//GEN-LAST:event_countryBtnMouseExited

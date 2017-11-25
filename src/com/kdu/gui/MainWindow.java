@@ -5,18 +5,63 @@
  */
 package com.kdu.gui;
 
+import static com.kdu.gui.Tempo.s;
+import com.kdu.test.SimpleAudioRecorder;
+import java.io.File;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+import jm.music.data.Score;
+import jm.util.Play;
+import jm.util.Read;
+import static sun.misc.MessageUtils.out;
+
 /**
  *
  * @author Lasitha
  */
 public class MainWindow extends javax.swing.JFrame {
-
+    public static SimpleAudioRecorder recorder;
+    public int backmusicTempo;
+    public Score s = new Score();
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    public MainWindow(int tempo) {
         initComponents();
         setLocationRelativeTo(null);
+        backmusicTempo = tempo;
+        Read.midi(s, "34time8.mid");
+        s.setTempo(backmusicTempo);
+        System.out.println("TEMPO OF MAIN "+tempo);
+        
+         File outputFile = new File(".midi");
+        
+        AudioFormat audioFormat = new AudioFormat(
+                AudioFormat.Encoding.PCM_SIGNED,
+                44100.0F, 16, 2, 4, 44100.0F, false);
+
+        DataLine.Info infomation = new DataLine.Info(TargetDataLine.class, audioFormat);
+        TargetDataLine targetDataLine = null;
+        try {
+            targetDataLine = (TargetDataLine) AudioSystem.getLine(infomation);
+            targetDataLine.open(audioFormat);
+        } catch (LineUnavailableException e) {
+            out("unable to get a recording line");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        AudioFileFormat.Type targetType = AudioFileFormat.Type.WAVE;
+        
+        recorder = new SimpleAudioRecorder(
+                targetDataLine,
+                targetType,
+                outputFile);
     }
 
     /**
@@ -29,7 +74,9 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1030, 580));
@@ -38,9 +85,27 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/kdu/gui/images/main window.png"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 1040, 551);
+        jButton1.setText("Record");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(30, 30, 110, 50);
+
+        jButton2.setText("Stop");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(180, 30, 110, 50);
+
+        jButton3.setText("jButton3");
+        jPanel1.add(jButton3);
+        jButton3.setBounds(320, 30, 90, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,10 +123,21 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Play.midiCycle(s);
+        recorder.start(); 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Play.stopMidiCycle();
+        recorder.stopRecording();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+       
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -84,17 +160,25 @@ public class MainWindow extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                new MainWindow(1).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    public Score backmusic(){
+        Read.midi(s, "34time8.mid");
+        s.setTempo(backmusicTempo);
+        return s;
+    }
 }
